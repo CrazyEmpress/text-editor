@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Title</title>
+        <link rel="stylesheet" href="css/bootstrap.css" type="text/css" />
+        <script src="js/index.js" type="text/javascript"></script>
+        <style>
+            .text-editor {
+                position: absolute;
+                background: white;
+                display: grid;
+                grid-template-columns: repeat(2, 1fr);
+                top: 1rem;
+                left: 1rem;
+            }
+            .text-editor button {
+                border: 1px solid black;
+                background: white;
+                padding: 10px 10px;
+            }
+            .text-editor button:not(:first-child) {
+                border-left: none;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container" style="display: grid">
+            <label for="1">Первое поле</label>
+            <textarea class="textarea" id="1" cols="80" rows="10">Текст для примера</textarea>
+            <label for="2">Второе поле</label>
+            <textarea class="textarea" id="2" cols="80" rows="10">Второй текст для примера</textarea>
+        </div>
+        <div class="text-editor">
+            <button id="bolder"><b>Bold</b></button>
+            <button id="italic"><em>Italic</em></button>
+            <button id="list">1</button>
+        </div>
+        <div class="example"></div>
+    </body>
+</html>
