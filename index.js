@@ -86,8 +86,8 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     list.onclick = () => {
         for (let i = 0; i < textAreas.length; i++) {
-            let tagStart = '<ul><li>';
-            let tagEnd = '</li></ul>';
+            let tagStart = '\n<ul>\n   <li>';
+            let tagEnd = '</li>\n</ul>\n';
             let allText = textAreas[i].value;
             let selStart = textAreas[i].selectionStart;
             let selEnd = textAreas[i].selectionEnd;
@@ -95,6 +95,14 @@ document.addEventListener('DOMContentLoaded', function() {
                 let selText = textAreas[i].value.substring(selStart, selEnd);
                 let dataArr = checkTags(selText, allText, tagStart, tagEnd);
                 textAreas[i].setRangeText(dataArr[0], dataArr[1], dataArr[2], 'select');
+            }
+            checkEnter(textAreas[i]);
+        }
+    }
+    let checkEnter = (iterationObject) => {
+        document.onkeydown = (e) => {
+            if (e.code === 'Enter') {
+                iterationObject.setRangeText('  <li></li>')
             }
         }
     }
