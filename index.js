@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', function() {
     'use strict';
-    let textEditor = document.querySelector('.text-editor');
+    // let textEditor = document.querySelector('.text-editor');
     let bolder = document.querySelector('#bolder');
     let italic = document.querySelector('#italic');
     let list = document.querySelector('#list');
