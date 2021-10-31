@@ -38,10 +38,8 @@ document.addEventListener('DOMContentLoaded', function() {
         else if (selected.includes(tagEnd)) {
             let tagStartIndex = allText.lastIndexOf(tagStart, endPosition);
             selected = allText.slice(tagStartIndex - tagStart.length, endPosition);
-            show(selected + ' - выбранный текст')
             selected = selected.replace(tagStart, '');
             selected = selected.replace(tagEnd, '');
-            show(selected + ' - очищенный текст');
             return[selected,tagStartIndex - tagStart.length, endPosition];
 
         }
@@ -87,7 +85,7 @@ document.addEventListener('DOMContentLoaded', function() {
     list.onclick = () => {
         for (let i = 0; i < textAreas.length; i++) {
             let tagStart = '\n<ul>\n   <li>';
-            let tagEnd = '</li>\n</ul>\n';
+            let tagEnd = '</li>\n</ul>\n\n';
             let allText = textAreas[i].value;
             let selStart = textAreas[i].selectionStart;
             let selEnd = textAreas[i].selectionEnd;
@@ -95,15 +93,27 @@ document.addEventListener('DOMContentLoaded', function() {
                 let selText = textAreas[i].value.substring(selStart, selEnd);
                 let dataArr = checkTags(selText, allText, tagStart, tagEnd);
                 textAreas[i].setRangeText(dataArr[0], dataArr[1], dataArr[2], 'select');
+                checkEnter(textAreas[i], allText);
             }
-            checkEnter(textAreas[i]);
         }
     }
+    // Если был нажат Enter внутри списка - добавляет ещё один элемент списка (li)
     let checkEnter = (iterationObject) => {
         document.onkeydown = (e) => {
+            let allText = iterationObject.value;
+            let cursorPosition = getCursorPosition(iterationObject);
+            show(cursorPosition + ' - cursor position');
+            let searchArea = allText.slice(cursorPosition - 5, cursorPosition + 5);
+            show(searchArea + ' - search area');
             if (e.code === 'Enter') {
-                iterationObject.setRangeText('  <li></li>')
+                if (searchArea.includes('<li>') || searchArea.includes('</li>')) {
+                    iterationObject.setRangeText('  <li></li>');
+                }
             }
         }
+    }
+    let getCursorPosition = (iterationObject) => {
+        let text = iterationObject.value;
+        return text.slice(0, iterationObject.selectionStart).length;
     }
 });
