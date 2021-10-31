@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', function() {
     'use strict';
-    // let textEditor = document.querySelector('.text-editor');
+    let textEditor = document.querySelector('.text-editor');
     let bolder = document.querySelector('#bolder');
     let italic = document.querySelector('#italic');
     let list = document.querySelector('#list');
@@ -10,7 +10,7 @@ document.addEventListener('DOMContentLoaded', function() {
         console.log(text);
     }
     let checkTags = (selected, allText, tagStart, tagEnd) => {
-        // Изначальный поиск включает только выделенный текст, три строчки ниже берут на 3123 символа до и на 4 после выделенной строки (основываясь на длине таких тэгов как <i> и <b>
+        // Изначальный поиск включает только выделенный текст, три строчки ниже берут на 3 символа до и на 4 после выделенной строки (основываясь на длине таких тэгов как <i> и <b>
         let startPosition = allText.indexOf(selected, 0);
         let endPosition = startPosition + selected.length;
         let extendedSelection = allText.slice(startPosition - tagStart.length, endPosition + tagEnd.length);
