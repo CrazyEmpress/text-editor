@@ -9,11 +9,13 @@
             .text-editor {
                 position: absolute;
                 background: white;
-                display: grid;
+                display: none;
                 grid-template-columns: repeat(3, 1fr);
                 grid-template-rows: repeat(2, 1fr);
-                bottom: 1rem;
-                right: 1rem;
+                bottom: 55vh;
+                left: 1rem;
+                opacity: 0;
+                transition: opacity 0.3s ease-in-out;
             }
             .text-editor button {
                 border: 1px solid black;
@@ -22,6 +24,13 @@
             }
             .text-editor button:not(:first-child) {
                 border-left: none;
+            }
+            .text-editor button:nth-child(4) {
+                border-left: 1px solid black;
+                border-top: none;
+            }
+            .text-editor button:nth-child(5), .text-editor button:nth-child(6) {
+                border-top: none;
             }
             #link {
                 text-decoration: underline;
@@ -43,6 +52,10 @@
             .numeric-list {
                 list-style-type: decimal;
             }
+            .visible-editor {
+                opacity: 1;
+                transition: opacity 0.3s ease-in-out;
+            }
         </style>
     </head>
     <body>
@@ -50,14 +63,14 @@
             <label for="1">Первое поле</label>
             <textarea class="textarea" id="1" cols="80" rows="10">Текст для примера</textarea>
         </div>
-        <div class="text-editor">
-            <button id="bolder" title="Выделяет текст внутри <b>...</b> конструкции жирным"><b>Bold</b></button>
-            <button id="italic" title="Выделяет текст внутри <i>...</i> конструкции курсивом"><em>Italic</em></button>
-            <button id="list" title="Создаёт конструкцию, позволяющую использовать текст внутри <li>...</li> как пункт не нумированного списка"></button>
-            <button id="numeric-list" title="Создаёт конструкцию, позволяющую использовать текст внутри <li>...</li> как пункт нумированного списка">1.</button>
-            <button id="link" title="Создаёт ссылку (ссылка указывается внутри href='...')">a</button>
-            <button id="paragraph" title="Создаёт новый параграф (текст указывается внутри <p>...</p>)">р</button>
-        </div>
-        <div class="example"></div>
+<!--        <div class="text-editor">-->
+<!--            <button id="bolder" title="Выделяет текст внутри <b>...</b> конструкции жирным"><b>Bold</b></button>-->
+<!--            <button id="italic" title="Выделяет текст внутри <i>...</i> конструкции курсивом"><em>Italic</em></button>-->
+<!--            <button id="list" title="Создаёт конструкцию, позволяющую использовать текст внутри <li>...</li> как пункт не нумированного списка"></button>-->
+<!--            <button id="numeric-list" title="Создаёт конструкцию, позволяющую использовать текст внутри <li>...</li> как пункт нумированного списка">1.</button>-->
+<!--            <button id="link" title="Создаёт ссылку (ссылка указывается внутри href='...')">a</button>-->
+<!--            <button id="paragraph" title="Создаёт новый параграф (текст указывается внутри <p>...</p>)">р</button>-->
+<!--        </div>-->
+<!--        <div class="example"></div>-->
     </body>
 </html>

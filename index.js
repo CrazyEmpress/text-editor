@@ -1,6 +1,8 @@
-// Нужно добавить смену цвета и очистку форматирования, вокнуть это всё в functions.php и протестить
 document.addEventListener('DOMContentLoaded', function() {
     'use strict';
+    let textEditor = '<div class="text-editor"><button id="bolder" title="Выделяет текст внутри <b>...</b> конструкции жирным"><b>Bold</b></button><button id="italic" title="Выделяет текст внутри <i>...</i> конструкции курсивом"><em>Italic</em></button><button id="list" title="Создаёт конструкцию, позволяющую использовать текст внутри <li>...</li> как пункт не нумированного списка"></button><button id="numeric-list" title="Создаёт конструкцию, позволяющую использовать текст внутри <li>...</li> как пункт нумированного списка">1.</button><button id="link" title="Создаёт ссылку (ссылка указывается внутри href="...")">a</button><button id="paragraph" title="Создаёт новый параграф (текст указывается внутри <p>...</p>)">р</button></div>';
+    document.querySelector('body').innerHTML += textEditor;
+    let editorWrapper = document.querySelector('.text-editor');
     let bolder = document.querySelector('#bolder');
     let italic = document.querySelector('#italic');
     let list = document.querySelector('#list');
@@ -37,21 +39,18 @@ document.addEventListener('DOMContentLoaded', function() {
         let extendedSelection = allText.slice(startPosition - tagStart.length, endPosition + tagEnd.length);
         //Если выделенный текст включает в себя тэги
         if (selected.includes(tagStart) && selected.includes(tagEnd)) {
-            console.log("1");
             selected = selected.replace(tagStart, '');
             selected = selected.replace(tagEnd, '');
             return [selected, startPosition, endPosition];
         }
         // Если выделенный текст НЕ включает в себя тэги - ищем на три символа до и на 4 после выделенной строки
         else if (extendedSelection.includes(tagStart) && extendedSelection.includes(tagEnd)) {
-            console.log("2");
             extendedSelection = extendedSelection.replace(tagStart, '');
             extendedSelection = extendedSelection.replace(tagEnd, '');
             return [extendedSelection, startPosition - tagStart.length, endPosition + tagEnd.length];
         }
         // Если выделенный текст включает только открывающий тэг - ищем закрывающий и удаляем оба
         else if (selected.includes(tagStart)) {
-            console.log("2");
             let tagEndIndex = allText.indexOf(tagEnd, startPosition);
             selected = allText.slice(startPosition, tagEndIndex + tagEnd.length);
             selected = selected.replace(tagStart, '');
@@ -60,7 +59,6 @@ document.addEventListener('DOMContentLoaded', function() {
         }
         // Если выделенный текст включает только закрывающий тэг - ищем открывающий и удаляем оба
         else if (selected.includes(tagEnd)) {
-            console.log("3");
             let tagStartIndex = allText.lastIndexOf(tagStart, endPosition);
             selected = allText.slice(tagStartIndex - tagStart.length, endPosition);
             selected = selected.replace(tagStart, '');
@@ -70,7 +68,6 @@ document.addEventListener('DOMContentLoaded', function() {
         }
         // Если выделенный текст и расширенный текст не содержат в себе нужных тегов, пример <i><b>Пример</b></i>
         else {
-            console.log("4");
             selected = `${tagStart}${selected}${tagEnd}`;
             return [selected, startPosition, endPosition];
         }
@@ -79,7 +76,16 @@ document.addEventListener('DOMContentLoaded', function() {
     let selectedRangeCheck = (selStart, selEnd) => {
         return ((selStart + selEnd) !== 0 && selStart !== selEnd);
     }
-
+    for (let textArea of textAreas) {
+        textArea.onfocus = () => {
+            editorWrapper.style.display = 'grid';
+            setTimeout(() => editorWrapper.classList.add('visible-editor'),300);
+        }
+        textArea.onblur = () => {
+            editorWrapper.classList.remove('visible-editor');
+            setTimeout(() => editorWrapper.style.display = 'none',300);
+        }
+    }
     bolder.onclick = () => {
         for (let i = 0; i < textAreas.length; i++) {
             let tagStart = '<b>';
