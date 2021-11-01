@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
     <head>
         <meta charset="UTF-8">
         <title>Title</title>
@@ -10,7 +10,7 @@
                 position: absolute;
                 background: white;
                 display: grid;
-                grid-template-columns: repeat(2, 1fr);
+                grid-template-columns: repeat(6, 1fr);
                 bottom: 1rem;
                 right: 1rem;
             }
@@ -22,24 +22,40 @@
             .text-editor button:not(:first-child) {
                 border-left: none;
             }
+            #link {
+                text-decoration: underline;
+            }
+            #list {
+                position: relative;
+            }
+            #list:after {
+                content: " ";
+                background: black;
+                width: 10px;
+                height: 10px;
+                position: absolute;
+                border-radius: 100%;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+            }
+            #numeric-list {
+                list-style-type: decimal;
+            }
         </style>
     </head>
     <body>
         <div class="container" style="display: grid">
             <label for="1">Первое поле</label>
             <textarea class="textarea" id="1" cols="80" rows="10">Текст для примера</textarea>
-            <label for="2">Второе поле</label>
-            <textarea class="textarea" id="2" cols="80" rows="10">Второй текст для примера</textarea>
         </div>
         <div class="text-editor">
             <button id="bolder" title="Выделяет текст внутри <b>...</b> конструкции жирным"><b>Bold</b></button>
             <button id="italic" title="Выделяет текст внутри <i>...</i> конструкции курсивом"><em>Italic</em></button>
-            <button id="list"
-                    title="Создаёт
-            <ul>
-                <li>...</li>
-            </ul>
-            конструкцию, позволяющую использовать текст внутри <li>...</li> как не нумированный список">1</button>
+            <button id="list" title="Создаёт конструкцию, позволяющую использовать текст внутри <li>...</li> как пункт не нумированного списка"></button>
+            <button id="numeric-list" title="Создаёт конструкцию, позволяющую использовать текст внутри <li>...</li> как пункт нумированного списка">1</button>
+            <button id="link" title="Создаёт ссылку (ссылка указывается внутри href='...')">a</button>
+            <button id="paragraph" title="Создаёт новый параграф (текст указывается внутри <p>...</p>)">р</button>
         </div>
         <div class="example"></div>
     </body>

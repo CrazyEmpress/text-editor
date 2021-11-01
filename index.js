@@ -4,6 +4,9 @@ document.addEventListener('DOMContentLoaded', function() {
     let bolder = document.querySelector('#bolder');
     let italic = document.querySelector('#italic');
     let list = document.querySelector('#list');
+    let numericList = document.querySelector('#numeric-list');
+    let link = document.querySelector('#link');
+    let paragraph = document.querySelector('#paragraph');
     let textAreas = document.querySelectorAll('textarea.textarea');
     let exampleDiv = document.querySelector('.example');
     let show = (text) => {
@@ -85,7 +88,7 @@ document.addEventListener('DOMContentLoaded', function() {
     list.onclick = () => {
         for (let i = 0; i < textAreas.length; i++) {
             let tagStart = '\n<ul>\n   <li>';
-            let tagEnd = '</li>\n</ul>\n\n';
+            let tagEnd = '</li>\n</ul>\n';
             let allText = textAreas[i].value;
             let selStart = textAreas[i].selectionStart;
             let selEnd = textAreas[i].selectionEnd;
@@ -95,7 +98,53 @@ document.addEventListener('DOMContentLoaded', function() {
                 textAreas[i].setRangeText(dataArr[0], dataArr[1], dataArr[2], 'select');
                 checkEnter(textAreas[i], allText);
             }
+            exampleDiv.innerHTML = textAreas[i].value;
         }
+    }
+    numericList.onclick = () => {
+        for (let i = 0; i < textAreas.length; i++) {
+            let tagStart = '\n<ul class="numeric-list">\n   <li>';
+            let tagEnd = '</p>';
+            let allText = textAreas[i].value;
+            let selStart = textAreas[i].selectionStart;
+            let selEnd = textAreas[i].selectionEnd;
+            if (selectedRangeCheck(selStart, selEnd)) {
+                let selText = textAreas[i].value.substring(selStart, selEnd);
+                let dataArr = checkTags(selText, allText, tagStart, tagEnd);
+                textAreas[i].setRangeText(dataArr[0], dataArr[1], dataArr[2], 'select');
+            }
+            exampleDiv.innerHTML = textAreas[i].value;
+        }
+    }
+    link.onclick = () => {
+        for (let i = 0; i < textAreas.length; i++) {
+            let tagStart = '<a href="">';
+            let tagEnd = '</a>';
+            let allText = textAreas[i].value;
+            let selStart = textAreas[i].selectionStart;
+            let selEnd = textAreas[i].selectionEnd;
+            if (selectedRangeCheck(selStart, selEnd)) {
+                let selText = textAreas[i].value.substring(selStart, selEnd);
+                let dataArr = checkTags(selText, allText, tagStart, tagEnd);
+                textAreas[i].setRangeText(dataArr[0], dataArr[1], dataArr[2], 'select');
+            }
+            exampleDiv.innerHTML = textAreas[i].value;
+        }
+    }
+    paragraph.onclick = () => {
+        for (let i = 0; i < textAreas.length; i++) {
+            let tagStart = '<p>';
+            let tagEnd = '</p>';
+            let allText = textAreas[i].value;
+            let selStart = textAreas[i].selectionStart;
+            let selEnd = textAreas[i].selectionEnd;
+            if (selectedRangeCheck(selStart, selEnd)) {
+                let selText = textAreas[i].value.substring(selStart, selEnd);
+                let dataArr = checkTags(selText, allText, tagStart, tagEnd);
+                textAreas[i].setRangeText(dataArr[0], dataArr[1], dataArr[2], 'select');
+            }
+        }
+        exampleDiv.innerHTML = textAreas[i].value;
     }
     // Если был нажат Enter внутри списка - добавляет ещё один элемент списка (li)
     let checkEnter = (iterationObject) => {
@@ -112,6 +161,7 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         }
     }
+    // Получение позиции курсора
     let getCursorPosition = (iterationObject) => {
         let text = iterationObject.value;
         return text.slice(0, iterationObject.selectionStart).length;
