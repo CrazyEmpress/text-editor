@@ -10,7 +10,8 @@
                 position: absolute;
                 background: white;
                 display: grid;
-                grid-template-columns: repeat(6, 1fr);
+                grid-template-columns: repeat(3, 1fr);
+                grid-template-rows: repeat(2, 1fr);
                 bottom: 1rem;
                 right: 1rem;
             }
@@ -39,7 +40,7 @@
                 left: 50%;
                 transform: translate(-50%, -50%);
             }
-            #numeric-list {
+            .numeric-list {
                 list-style-type: decimal;
             }
         </style>
@@ -53,7 +54,7 @@
             <button id="bolder" title="Выделяет текст внутри <b>...</b> конструкции жирным"><b>Bold</b></button>
             <button id="italic" title="Выделяет текст внутри <i>...</i> конструкции курсивом"><em>Italic</em></button>
             <button id="list" title="Создаёт конструкцию, позволяющую использовать текст внутри <li>...</li> как пункт не нумированного списка"></button>
-            <button id="numeric-list" title="Создаёт конструкцию, позволяющую использовать текст внутри <li>...</li> как пункт нумированного списка">1</button>
+            <button id="numeric-list" title="Создаёт конструкцию, позволяющую использовать текст внутри <li>...</li> как пункт нумированного списка">1.</button>
             <button id="link" title="Создаёт ссылку (ссылка указывается внутри href='...')">a</button>
             <button id="paragraph" title="Создаёт новый параграф (текст указывается внутри <p>...</p>)">р</button>
         </div>

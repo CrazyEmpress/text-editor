@@ -1,6 +1,6 @@
+// Нужно добавить смену цвета и очистку форматирования, вокнуть это всё в functions.php и протестить
 document.addEventListener('DOMContentLoaded', function() {
     'use strict';
-    // let textEditor = document.querySelector('.text-editor');
     let bolder = document.querySelector('#bolder');
     let italic = document.querySelector('#italic');
     let list = document.querySelector('#list');
@@ -9,9 +9,27 @@ document.addEventListener('DOMContentLoaded', function() {
     let paragraph = document.querySelector('#paragraph');
     let textAreas = document.querySelectorAll('textarea.textarea');
     let exampleDiv = document.querySelector('.example');
-    let show = (text) => {
-        console.log(text);
+
+    // Если был нажат Enter внутри списка - добавляет ещё один элемент списка (li)
+    let checkEnter = (iterationObject) => {
+        document.onkeydown = (e) => {
+            let allText = iterationObject.value;
+            let cursorPosition = getCursorPosition(iterationObject);
+            let searchArea = allText.slice(cursorPosition - 5, cursorPosition + 5);
+            if (e.code === 'Enter') {
+                if (searchArea.includes('<li>') || searchArea.includes('</li>')) {
+                    iterationObject.setRangeText('  <li></li>');
+                }
+            }
+        }
     }
+
+    // Получение позиции курсора
+    let getCursorPosition = (iterationObject) => {
+        let text = iterationObject.value;
+        return text.slice(0, iterationObject.selectionStart).length;
+    }
+
     let checkTags = (selected, allText, tagStart, tagEnd) => {
         // Изначальный поиск включает только выделенный текст, три строчки ниже берут на 3 символа до и на 4 после выделенной строки (основываясь на длине таких тэгов как <i> и <b>
         let startPosition = allText.indexOf(selected, 0);
@@ -19,18 +37,21 @@ document.addEventListener('DOMContentLoaded', function() {
         let extendedSelection = allText.slice(startPosition - tagStart.length, endPosition + tagEnd.length);
         //Если выделенный текст включает в себя тэги
         if (selected.includes(tagStart) && selected.includes(tagEnd)) {
+            console.log("1");
             selected = selected.replace(tagStart, '');
             selected = selected.replace(tagEnd, '');
             return [selected, startPosition, endPosition];
         }
         // Если выделенный текст НЕ включает в себя тэги - ищем на три символа до и на 4 после выделенной строки
         else if (extendedSelection.includes(tagStart) && extendedSelection.includes(tagEnd)) {
+            console.log("2");
             extendedSelection = extendedSelection.replace(tagStart, '');
             extendedSelection = extendedSelection.replace(tagEnd, '');
             return [extendedSelection, startPosition - tagStart.length, endPosition + tagEnd.length];
         }
         // Если выделенный текст включает только открывающий тэг - ищем закрывающий и удаляем оба
         else if (selected.includes(tagStart)) {
+            console.log("2");
             let tagEndIndex = allText.indexOf(tagEnd, startPosition);
             selected = allText.slice(startPosition, tagEndIndex + tagEnd.length);
             selected = selected.replace(tagStart, '');
@@ -39,6 +60,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
         // Если выделенный текст включает только закрывающий тэг - ищем открывающий и удаляем оба
         else if (selected.includes(tagEnd)) {
+            console.log("3");
             let tagStartIndex = allText.lastIndexOf(tagStart, endPosition);
             selected = allText.slice(tagStartIndex - tagStart.length, endPosition);
             selected = selected.replace(tagStart, '');
@@ -48,13 +70,16 @@ document.addEventListener('DOMContentLoaded', function() {
         }
         // Если выделенный текст и расширенный текст не содержат в себе нужных тегов, пример <i><b>Пример</b></i>
         else {
+            console.log("4");
             selected = `${tagStart}${selected}${tagEnd}`;
             return [selected, startPosition, endPosition];
         }
     }
+
     let selectedRangeCheck = (selStart, selEnd) => {
         return ((selStart + selEnd) !== 0 && selStart !== selEnd);
     }
+
     bolder.onclick = () => {
         for (let i = 0; i < textAreas.length; i++) {
             let tagStart = '<b>';
@@ -104,7 +129,7 @@ document.addEventListener('DOMContentLoaded', function() {
     numericList.onclick = () => {
         for (let i = 0; i < textAreas.length; i++) {
             let tagStart = '\n<ul class="numeric-list">\n   <li>';
-            let tagEnd = '</p>';
+            let tagEnd = '</li>\n</ul>\n';
             let allText = textAreas[i].value;
             let selStart = textAreas[i].selectionStart;
             let selEnd = textAreas[i].selectionEnd;
@@ -112,6 +137,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 let selText = textAreas[i].value.substring(selStart, selEnd);
                 let dataArr = checkTags(selText, allText, tagStart, tagEnd);
                 textAreas[i].setRangeText(dataArr[0], dataArr[1], dataArr[2], 'select');
+                checkEnter(textAreas[i], allText);
             }
             exampleDiv.innerHTML = textAreas[i].value;
         }
@@ -143,27 +169,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 let dataArr = checkTags(selText, allText, tagStart, tagEnd);
                 textAreas[i].setRangeText(dataArr[0], dataArr[1], dataArr[2], 'select');
             }
+            exampleDiv.innerHTML = textAreas[i].value;
         }
-        exampleDiv.innerHTML = textAreas[i].value;
-    }
-    // Если был нажат Enter внутри списка - добавляет ещё один элемент списка (li)
-    let checkEnter = (iterationObject) => {
-        document.onkeydown = (e) => {
-            let allText = iterationObject.value;
-            let cursorPosition = getCursorPosition(iterationObject);
-            show(cursorPosition + ' - cursor position');
-            let searchArea = allText.slice(cursorPosition - 5, cursorPosition + 5);
-            show(searchArea + ' - search area');
-            if (e.code === 'Enter') {
-                if (searchArea.includes('<li>') || searchArea.includes('</li>')) {
-                    iterationObject.setRangeText('  <li></li>');
-                }
-            }
-        }
-    }
-    // Получение позиции курсора
-    let getCursorPosition = (iterationObject) => {
-        let text = iterationObject.value;
-        return text.slice(0, iterationObject.selectionStart).length;
     }
 });
